@@ -6,7 +6,6 @@ from time import sleep
 OUTPUT_SIZE_WIDTH = 640
 OUTPUT_SIZE_HEIGHT = 480
 
-
 class Bot:
     capture = cv2.VideoCapture(0)
     color = "#000000"
@@ -23,7 +22,7 @@ class Bot:
 
     def update(self):
         rc , fullSizeBaseImage = self.capture.read()
-        baseImage = cv2.resize( fullSizeBaseImage, (640, 480))
+        baseImage = cv2.resize( fullSizeBaseImage, (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
         testFace, rectCords = self.facetracker.get_face(baseImage, True)
         if testFace is not None:
             self.x , self.y, self.w, self.h = rectCords[0], rectCords[1], rectCords[2], rectCords[3]
@@ -56,6 +55,7 @@ class Bot:
 #prep face tracker
 facetracker = facetrack.FaceTracker("data")
 facetracker.train()
+print("trained model...")
 
 #prep tk window
 def quit():
@@ -69,8 +69,8 @@ bot = Bot(w, facetracker)
 Button(master, text="Quit", command=quit).pack()
 
 while True:
-        sleep(0.08)
-        bot.update()
-        bot.draw()
-        master.update_idletasks()
-        master.update()
+    sleep(0.08)
+    bot.update()
+    bot.draw()
+    master.update_idletasks()
+    master.update()
